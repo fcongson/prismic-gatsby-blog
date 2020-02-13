@@ -1,5 +1,9 @@
-const { apiEndpoint } = require('./prismic-config');
-var repo = /([^\/]+)\.prismic\.io\/graphql/.exec(apiEndpoint);
+const { apiEndpoint } = require("./prismic-config")
+var repo = /([^\/]+)\.prismic\.io\/graphql/.exec(apiEndpoint)
+
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 
 module.exports = {
   siteMetadata: {
@@ -13,15 +17,18 @@ module.exports = {
       resolve: `gatsby-source-prismic-graphql`,
       options: {
         repositoryName: repo[1], // Loads the repo name from prismic configuration
-        path: '/preview',
+        accessToken: `${process.env.API_KEY}`,
+        path: "/preview",
         previews: true,
-        pages: [{
-          type: 'Post',
-          match: '/blog/:uid',
-          path: '/blog-preview',
-          component: require.resolve('./src/templates/post.js')
-        }]
-      }
+        pages: [
+          {
+            type: "Post",
+            match: "/blog/:uid",
+            path: "/blog-preview",
+            component: require.resolve("./src/templates/post.js"),
+          },
+        ],
+      },
     },
     `gatsby-plugin-sass`,
     {
